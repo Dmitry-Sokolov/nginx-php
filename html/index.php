@@ -45,7 +45,7 @@ $i = 0;
 $files = array();
 if ($handle = opendir('.')) {
 while (false !== ($file = readdir($handle))) {
-       if ($file != "." && $file != ".." && is_dir($file)) {
+       if ($file != "." && $file != ".." && is_dir($file) && $file != ".git") {
           $files[filemtime($file)] = $file;
           $i++;
        }
