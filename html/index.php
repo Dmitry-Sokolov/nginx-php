@@ -10,9 +10,9 @@
 	<style type="text/css">
 		body{
 			display: -webkit-flex;
-    		-webkit-flex-direction: row;
-  			-webkit-flex-wrap: wrap;
-  			font-family: "Lucida Sans Unicode";
+			-webkit-flex-direction: row;
+			-webkit-flex-wrap: wrap;
+			font-family: "Lucida Sans Unicode";
 			max-width: 98%;
 		}
 		a{
@@ -32,25 +32,32 @@
 		a:hover{
 			background: #56cfff;
 		}
+		a.all{
+			background: transparent;
+			color: #333333;
+		}
+		a.all:hover{
+			color: #2673ec;
+		}
 	</style>
 </head>
 <body>
 
 <?php
 
-$number  = ($_REQUEST['number']) ? $_REQUEST['number'] : 10;
+$number = ($_REQUEST['number']) ? $_REQUEST['number'] : 10;
 $showAll = ($_REQUEST['all']) ? $_REQUEST['all'] : false;
 $replaceSymbols = ['_', '-'];
 $i = 0;
 $files = array();
 if ($handle = opendir('.')) {
-while (false !== ($file = readdir($handle))) {
-       if ($file != "." && $file != ".." && is_dir($file) && $file != ".git") {
-          $files[filemtime($file)] = $file;
-          $i++;
-       }
-   }
-   closedir($handle);
+	while (false !== ($file = readdir($handle))) {
+		if ($file != "." && $file != ".." && is_dir($file) && $file != ".git") {
+			$files[filemtime($file)] = $file;
+			$i++;
+		}
+	}
+	closedir($handle);
 }
 
 // sort
@@ -60,17 +67,19 @@ $keyFiles = array_keys($files);
 print_r($files);
 echo '</pre>';*/
 $length = count($files);
-if(!$showAll){
-	$length = $number;
+if (!$showAll) {
+	if ($length > $number) {
+		$length = $number;
+	}
 }
-for($i=0; $i < $length; $i++){
+for ($i = 0; $i < $length; $i++) {
 	?>
-    <a href="<?=$files[$keyFiles[$i]]?>"><?=str_replace($replaceSymbols," ",$files[$keyFiles[$i]])?></a>
-    <?
+	<a href="<?= $files[$keyFiles[$i]] ?>"><?= str_replace($replaceSymbols, " ", $files[$keyFiles[$i]]) ?></a>
+	<?
 }
-if(!$showAll){
+if (!$showAll) {
 	?>
-	<a href="/?all=true">see all ...</a>
+	<a class="all" href="/?all=true">see all ...</a>
 	<?
 }
 ?>
