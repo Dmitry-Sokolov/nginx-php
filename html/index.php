@@ -6,7 +6,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
-	<title>Oleg's PC</title>
+	<title><?=$_SERVER['COMPUTERNAME']?></title>
 	<style type="text/css">
 		body{
 			display: -webkit-flex;
