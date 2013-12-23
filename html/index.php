@@ -45,6 +45,7 @@
 </head>
 <body>
 <?php
+$baseURL = str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
 
 $number = ($_REQUEST['number']) ? $_REQUEST['number'] : 10;
 $showAll = ($_REQUEST['all']) ? $_REQUEST['all'] : false;
@@ -70,12 +71,8 @@ $files = array();
 	}
 	closedir($handle);
 }
-
-// sort
 krsort($files);
-/*echo '<pre>';
-print_r($files);
-echo '</pre>';*/
+
 $length = count($files);
 if (!$showAll) {
 	if ($length > $number) {
@@ -87,12 +84,12 @@ if (!$showAll) {
 $keyFiles = array_keys($files);
 for ($i = 0; $i < $length; $i++) {
 	?>
-	<a href="<?=$_SERVER['REQUEST_URI'].$files[$keyFiles[$i]] ?>"><?= str_replace($replaceSymbols, " ", $files[$keyFiles[$i]]) ?></a>
+	<a href="<?=$baseURL.$files[$keyFiles[$i]] ?>/"><?= str_replace($replaceSymbols, " ", $files[$keyFiles[$i]]) ?></a>
 	<?
 }
 if (!$showAll) {
 	?>
-	<a class="all" href="<?=$_SERVER['REQUEST_URI']?>?all=true">see all ...</a>
+	<a class="all" href="<?=$baseURL?>?&all=true&search=<?=$search?>">see all ...</a>
 	<?
 }
 ?>

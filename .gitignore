@@ -1,0 +1,7 @@
+contrib
+docs
+logs
+temp
+html
+!html/index.php
+!config/nginx.conf
