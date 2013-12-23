@@ -9,11 +9,13 @@
 	<title><?=$_SERVER['COMPUTERNAME']?></title>
 	<style type="text/css">
 		body{
+			font-family: "Lucida Sans Unicode";
+			max-width: 98%;
+		}
+		.container{
 			display: -webkit-flex;
 			-webkit-flex-direction: row;
 			-webkit-flex-wrap: wrap;
-			font-family: "Lucida Sans Unicode";
-			max-width: 98%;
 		}
 		a{
 			display: -webkit-box;
@@ -42,17 +44,26 @@
 	</style>
 </head>
 <body>
-
 <?php
 
 $number = ($_REQUEST['number']) ? $_REQUEST['number'] : 10;
 $showAll = ($_REQUEST['all']) ? $_REQUEST['all'] : false;
+$search = ($_REQUEST['search']) ? strtolower($_REQUEST['search']) : '';
 $replaceSymbols = ['_', '-'];
 $i = 0;
 $files = array();
-if ($handle = opendir('.')) {
+?>
+<form>
+	<label for="search">Search:</label>
+	<input id="search" type="search" name="search" value="<?=$search?>" />
+</form>
+<div class="container">
+<?if ($handle = opendir('.')) {
 	while (false !== ($file = readdir($handle))) {
 		if ($file != "." && $file != ".." && is_dir($file) && $file != ".git") {
+			if($search){
+				if(strpos($file, $search) === false) continue;
+			}
 			$files[filemtime($file)] = $file;
 			$i++;
 		}
@@ -62,7 +73,6 @@ if ($handle = opendir('.')) {
 
 // sort
 krsort($files);
-$keyFiles = array_keys($files);
 /*echo '<pre>';
 print_r($files);
 echo '</pre>';*/
@@ -71,17 +81,21 @@ if (!$showAll) {
 	if ($length > $number) {
 		$length = $number;
 	}
+}else{
+	asort($files);
 }
+$keyFiles = array_keys($files);
 for ($i = 0; $i < $length; $i++) {
 	?>
-	<a href="<?= $files[$keyFiles[$i]] ?>"><?= str_replace($replaceSymbols, " ", $files[$keyFiles[$i]]) ?></a>
+	<a href="<?=$_SERVER['REQUEST_URI'].$files[$keyFiles[$i]] ?>"><?= str_replace($replaceSymbols, " ", $files[$keyFiles[$i]]) ?></a>
 	<?
 }
 if (!$showAll) {
 	?>
-	<a class="all" href="/?all=true">see all ...</a>
+	<a class="all" href="<?=$_SERVER['REQUEST_URI']?>?all=true">see all ...</a>
 	<?
 }
 ?>
+</div>
 </body>
 </html>
