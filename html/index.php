@@ -61,7 +61,7 @@ $files = array();
 <div class="container">
 <?if ($handle = opendir('.')) {
 	while (false !== ($file = readdir($handle))) {
-		if ($file != "." && $file != ".." && is_dir($file) && $file != ".git") {
+		if ($file != "." && $file != ".." && is_dir($file) && $file[0] !="." ){
 			if($search){
 				if(strpos($file, $search) === false) continue;
 			}
