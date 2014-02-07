@@ -1,7 +1,9 @@
+!html/index.php
+!html/favicon.ico
+!config/nginx.conf
+config
 contrib
 docs
 logs
 temp
 html
-!html/index.php
-!config/nginx.conf
